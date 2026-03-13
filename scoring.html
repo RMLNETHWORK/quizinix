@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuiziniX — Scoring Guide</title>
+    <style>
+/* ══════════════════════════════════════════
+   QUIZINIX — SCORING PAGE
+   ══════════════════════════════════════════ */
+:root {
+    --q1:           #1aaa88;
+    --q1-dim:       rgba(26,170,136,0.13);
+    --q1-border:    rgba(26,170,136,0.30);
+    --q1-glow:      0 0 24px rgba(26,170,136,0.40);
+
+    --q2:           #8844bb;
+    --q2-dim:       rgba(136,68,187,0.13);
+    --q2-border:    rgba(136,68,187,0.30);
+    --q2-glow:      0 0 24px rgba(136,68,187,0.45);
+
+    --q3:           #d4d4d4;
+    --q3-dim:       rgba(212,212,212,0.10);
+    --q3-border:    rgba(212,212,212,0.28);
+    --q3-glow:      0 0 24px rgba(212,212,212,0.35);
+
+    --glass-bg:     rgba(255,255,255,0.055);
+    --glass-border: rgba(255,255,255,0.10);
+    --nav-bg:       rgba(255,255,255,0.055);
+    --nav-blur:     blur(32px) saturate(1.6);
+    --nav-border:   rgba(255,255,255,0.10);
+    --text:         #eeeeee;
+    --text-muted:   rgba(238,238,238,0.58);
+    --scrollbar-bg: #0b0e13;
+    --transition:   0.18s ease;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar             { width: 5px; }
+::-webkit-scrollbar-track       { background: var(--scrollbar-bg); }
+::-webkit-scrollbar-thumb       { background: var(--q1); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #20ccaa; }
+* { scrollbar-width: thin; scrollbar-color: var(--q1) var(--scrollbar-bg); }
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; color: var(--text); scroll-behavior: smooth; }
+
+@font-face { font-family: demiBold; src: url(VisbyRoundCF-DemiBold.otf); }
+@font-face { font-family: Bold;     src: url(VisbyRoundCF-Bold.otf); }
+
+/* ── BACKGROUND ── */
+.bg {
+    position: fixed; inset: 0;
+    background-image: url(quizinix_bg.png);
+    background-position: center; z-index: -1;
+    filter: blur(4px);
+}
+body { min-height: 100vh; background-color: rgba(14,16,22,0.70);}
+
+/* ── NAV ── */
+.nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; height: 62px; position: sticky; top: 0; z-index: 100;
+    background: var(--nav-bg); backdrop-filter: var(--nav-blur);
+    border-bottom: 1px solid var(--nav-border);
+}
+a { text-decoration: none; color: var(--text); }
+#navTitle { font-family: Bold; font-size: 20px; margin: 0; letter-spacing: 0.02em; }
+.linkList { display: flex; align-items: center; gap: 30px; margin: 0; padding: 0; list-style: none; }
+.link { font-family: demiBold; font-size: 12.5px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; transition: color var(--transition); }
+.link:hover { color: var(--text); }
+
+/* ── PAGE WRAPPER ── */
+.page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 52px 24px 80px;
+}
+
+/* ── PAGE TITLE ── */
+.page-title {
+    font-family: Bold;
+    font-size: clamp(26px, 3.5vw, 42px);
+    margin: 0 0 8px 0;
+    line-height: 1.15;
+}
+.page-subtitle {
+    font-family: demiBold;
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0 0 48px 0;
+    letter-spacing: 0.03em;
+}
+
+/* ── SECTION HEADER ── */
+.section {
+    margin-bottom: 48px;
+}
+.section-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+.section-pip {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.section-title {
+    font-family: Bold;
+    font-size: 18px;
+    margin: 0;
+    letter-spacing: 0.01em;
+}
+.section-sub {
+    font-family: demiBold;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 0 0 0 auto;
+}
+
+/* ── TIER TABLE ── */
+.tier-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+.tier-row {
+    display: grid;
+    grid-template-columns: 88px 56px 1fr;
+    align-items: center;
+    gap: 0;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+.tier-row:hover { border-color: rgba(255,255,255,0.18); }
+
+.tier-score {
+    font-family: Bold;
+    font-size: 14px;
+    padding: 14px 16px;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.07);
+    color: var(--text);
+    letter-spacing: 0.02em;
+}
+.tier-bar-wrap {
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+}
+.tier-bar {
+    height: 4px;
+    border-radius: 99px;
+    width: 100%;
+}
+.tier-info {
+    padding: 14px 18px;
+}
+.tier-label {
+    font-family: Bold;
+    font-size: 13px;
+    margin: 0 0 3px 0;
+    color: var(--text);
+}
+.tier-desc {
+    font-family: demiBold;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.5;
+}
+.tier-quote {
+    font-family: demiBold;
+    font-size: 12px;
+    margin: 0 0 2px 0;
+}
+
+/* ── TOPICS COVERED ── */
+.topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+}
+.topic-chip {
+    font-family: demiBold;
+    font-size: 12.5px;
+    padding: 10px 14px;
+    border-radius: 9px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color var(--transition), border-color var(--transition);
+}
+.topic-chip:hover { color: var(--text); }
+.topic-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── LIVE SCORE BANNER ── */
+.live-banner {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 22px;
+    border-radius: 14px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+.live-banner.visible { display: flex; }
+.live-label {
+    font-family: demiBold;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+}
+.live-score-val {
+    font-family: Bold;
+    font-size: 28px;
+    margin: 0;
+    line-height: 1;
+}
+.live-interpretation {
+    font-family: demiBold;
+    font-size: 13px;
+    color: var(--text-muted);
+    max-width: 380px;
+}
+.live-badge {
+    font-family: demiBold;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 99px;
+    border: 1px solid;
+}
+
+/* ── PROGRESS BAR (live) ── */
+.live-progress-wrap {
+    width: 100%;
+    height: 5px;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.08);
+    overflow: hidden;
+    margin-top: 12px;
+}
+.live-progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+    width: 0%;
+}
+
+/* ── DIVIDER ── */
+.divider {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    margin: 48px 0;
+}
+
+/* ── OVERALL GRADING ── */
+.grade-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+}
+.grade-card {
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    transition: border-color var(--transition);
+}
+.grade-range {
+    font-family: Bold;
+    font-size: 22px;
+    margin: 0 0 6px 0;
+}
+.grade-title {
+    font-family: Bold;
+    font-size: 13px;
+    margin: 0 0 4px 0;
+}
+.grade-body {
+    font-family: demiBold;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.55;
+}
+
+/* ── Q-COLORS applied via class ── */
+.q1 { color: var(--q1); }
+.q2 { color: var(--q2); }
+.q3 { color: var(--q3); }
+.bg-q1 { background: var(--q1); }
+.bg-q2 { background: var(--q2); }
+.bg-q3 { background: var(--q3); }
+.border-q1 { border-color: var(--q1-border) !important; box-shadow: var(--q1-glow); }
+.border-q2 { border-color: var(--q2-border) !important; box-shadow: var(--q2-glow); }
+.border-q3 { border-color: var(--q3-border) !important; box-shadow: var(--q3-glow); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+    .nav { padding: 0 16px; }
+    .page { padding: 36px 16px 60px; }
+    .tier-row { grid-template-columns: 72px 44px 1fr; }
+    .tier-score { font-size: 12px; padding: 12px 10px; }
+    .live-banner { flex-direction: column; align-items: flex-start; }
+    .grade-grid { grid-template-columns: 1fr 1fr; }
+}
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+
+    <div class="nav">
+        <p id="navTitle">QuiziniX</p>
+        <nav class="linkList">
+            <a href="/index.html" class="link">Home</a>
+            <a href="https://trigonix.netlify.app" class="link">Trigonix</a>
+            <a href="/scoring.html" class="link">Scoring</a>
+        </nav>
+    </div>
+
+    <div class="page">
+
+        <h1 class="page-title">Scoring Guide</h1>
+        <p class="page-subtitle">How your results are interpreted across each assessment.</p>
+
+        <!-- ══ LIVE RESULT BANNER (shows if a score exists in localStorage) ══ -->
+        <div class="live-banner" id="liveBanner">
+            <div>
+                <p class="live-label">Your most recent score</p>
+                <p class="live-score-val" id="liveScoreVal">—</p>
+                <p class="live-interpretation" id="liveInterp"></p>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+                <span class="live-badge" id="liveBadge"></span>
+                <span class="live-label" id="liveQuizLabel"></span>
+            </div>
+            <div class="live-progress-wrap" style="width:100%">
+                <div class="live-progress-fill" id="liveProgressFill"></div>
+            </div>
+        </div>
+
+        <!-- ══ Q1 ══ -->
+        <div class="section">
+            <div class="section-head">
+                <span class="section-pip bg-q1"></span>
+                <h2 class="section-title">Q1 — Lines &amp; Coordinates</h2>
+                <span class="section-sub">20 items · 1 pt each</span>
+            </div>
+
+            <div class="topics-grid" style="margin-bottom:20px;">
+                <div class="topic-chip"><span class="topic-dot bg-q1"></span>Slope of a Line</div>
+                <div class="topic-chip"><span class="topic-dot bg-q1"></span>Distance Formula</div>
+                <div class="topic-chip"><span class="topic-dot bg-q1"></span>Midpoint Formula</div>
+                <div class="topic-chip"><span class="topic-dot bg-q1"></span>Y-Intercept &amp; Slope-Intercept Form</div>
+                <div class="topic-chip"><span class="topic-dot bg-q1"></span>Vertical &amp; Horizontal Lines</div>
+                <div class="topic-chip"><span class="topic-dot bg-q1"></span>Writing Line Equations</div>
+            </div>
+
+            <div class="tier-grid">
+                <div class="tier-row">
+                    <div class="tier-score">0</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q1" style="opacity:0.15;width:2%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q1">"Grabe ba."</p>
+                        <p class="tier-label">No score recorded</p>
+                        <p class="tier-desc">Either no questions were answered or all answers were incorrect. Revisit the fundamentals of coordinate geometry before retrying.</p>
+                    </div>
+                </div>
+                <div class="tier-row">
+                    <div class="tier-score">1 – 5</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q1" style="opacity:0.30;width:25%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q1">"Needs Improvement."</p>
+                        <p class="tier-label">Beginning</p>
+                        <p class="tier-desc">Core concepts like slope and distance are not yet solid. Focus on understanding the formulas and what each variable represents.</p>
+                    </div>
+                </div>
+                <div class="tier-row">
+                    <div class="tier-score">6 – 10</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q1" style="opacity:0.50;width:50%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q1">"There is still room for improvement."</p>
+                        <p class="tier-label">Developing</p>
+                        <p class="tier-desc">You understand some properties but are making errors on computation-heavy items like distance or writing equations from given points.</p>
+                    </div>
+                </div>
+                <div class="tier-row">
+                    <div class="tier-score">11 – 15</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q1" style="opacity:0.75;width:75%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q1">"You're almost there. Keep it up!"</p>
+                        <p class="tier-label">Proficient</p>
+                        <p class="tier-desc">Strong grasp of most line properties. Review edge cases — vertical line slopes, negative slopes, and midpoint order of operations.</p>
+                    </div>
+                </div>
+                <div class="tier-row">
+                    <div class="tier-score">16 – 19</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q1" style="opacity:0.90;width:90%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q1">"You made it! You're a GENIUS!"</p>
+                        <p class="tier-label">Advanced</p>
+                        <p class="tier-desc">Excellent command of analytic line geometry. One or two items slipped through — check sign errors in slope calculations or intercept reads.</p>
+                    </div>
+                </div>
+                <div class="tier-row border-q1">
+                    <div class="tier-score q1">20</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q1" style="width:100%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q1">"You are a master of Analytic Geometry! In this quiz I guess. ;)"</p>
+                        <p class="tier-label">Perfect</p>
+                        <p class="tier-desc">Flawless. Every slope, distance, midpoint, and equation answered correctly. Move on to Q2 if you haven't.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- ══ Q2 ══ -->
+        <div class="section">
+            <div class="section-head">
+                <span class="section-pip bg-q2"></span>
+                <h2 class="section-title">Q2 — Anatomy of a Circle</h2>
+                <span class="section-sub">20 items · 1 pt each</span>
+            </div>
+
+            <div class="topics-grid" style="margin-bottom:20px;">
+                <div class="topic-chip"><span class="topic-dot bg-q2"></span>Center &amp; Radius</div>
+                <div class="topic-chip"><span class="topic-dot bg-q2"></span>Diameter</div>
+                <div class="topic-chip"><span class="topic-dot bg-q2"></span>Chord &amp; Arc</div>
+                <div class="topic-chip"><span class="topic-dot bg-q2"></span>Tangent &amp; Secant</div>
+                <div class="topic-chip"><span class="topic-dot bg-q2"></span>Circumference (2πr)</div>
+                <div class="topic-chip"><span class="topic-dot bg-q2"></span>Area (πr²)</div>
+                <div class="topic-chip"><span class="topic-dot bg-q2"></span>Computing r &amp; d from equations</div>
+            </div>
+
+            <div class="tier-grid">
+                <div class="tier-row">
+                    <div class="tier-score">0</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q2" style="opacity:0.15;width:2%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q2">"Grabe ba."</p>
+                        <p class="tier-label">No score recorded</p>
+                        <p class="tier-desc">No correct answers. Start by learning what radius, diameter, chord, and tangent mean visually before working on formulas.</p>
+                    </div>
+                </div>
+                <div class="tier-row">
+                    <div class="tier-score">1 – 5</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q2" style="opacity:0.30;width:25%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q2">"Needs Improvement."</p>
+                        <p class="tier-label">Beginning</p>
+                        <p class="tier-desc">Struggles with terminology. Spend time distinguishing the parts of a circle — especially chord vs. diameter, and tangent vs. secant.</p>
+                    </div>
+                </div>
+                <div class="tier-row">
+                    <div class="tier-score">6 – 10</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q2" style="opacity:0.50;width:50%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q2">"There is still room for improvement."</p>
+                        <p class="tier-label">Developing</p>
+                        <p class="tier-desc">Terminology is improving, but computation items (area, circumference, diameter from radius) are causing errors. Practice plugging values into πr² and 2πr.</p>
+                    </div>
+                </div>
+                <div class="tier-row">
+                    <div class="tier-score">11 – 15</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q2" style="opacity:0.75;width:75%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q2">"You're almost there. Keep it up!"</p>
+                        <p class="tier-label">Proficient</p>
+                        <p class="tier-desc">Good understanding of circle anatomy and most formulas. Review the relationship d = 2r and double-check which formula gives area vs. circumference.</p>
+                    </div>
+                </div>
+                <div class="tier-row">
+                    <div class="tier-score">16 – 19</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q2" style="opacity:0.90;width:90%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q2">"You made it! You're a GENIUS!"</p>
+                        <p class="tier-label">Advanced</p>
+                        <p class="tier-desc">Near-perfect knowledge of circle properties. Minor slips — likely in multi-step area/circumference items. One more careful pass should get you to 20.</p>
+                    </div>
+                </div>
+                <div class="tier-row border-q2">
+                    <div class="tier-score q2">20</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q2" style="width:100%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q2">"You are a master of Analytic Geometry! In this quiz I guess. ;)"</p>
+                        <p class="tier-label">Perfect</p>
+                        <p class="tier-desc">Complete mastery of circle anatomy and formulas. Every part named, every value computed correctly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- ══ Q3 ══ -->
+        <div class="section">
+            <div class="section-head">
+                <span class="section-pip bg-q3"></span>
+                <h2 class="section-title">Q3 — Circles &amp; Parabolas</h2>
+                <span class="section-sub">20 items · 1 pt each</span>
+            </div>
+
+            <div class="topics-grid" style="margin-bottom:20px;">
+                <div class="topic-chip"><span class="topic-dot bg-q3"></span>Standard Form of a Circle</div>
+                <div class="topic-chip"><span class="topic-dot bg-q3"></span>Center &amp; Radius from Equation</div>
+                <div class="topic-chip"><span class="topic-dot bg-q3"></span>Upward &amp; Downward Parabolas</div>
+                <div class="topic-chip"><span class="topic-dot bg-q3"></span>Horizontal Parabolas</div>
+                <div class="topic-chip"><span class="topic-dot bg-q3"></span>Vertex Form (h, k)</div>
+                <div class="topic-chip"><span class="topic-dot bg-q3"></span>Identifying Vertex from Equation</div>
+            </div>
+
+            <div class="tier-grid">
+                <div class="tier-row">
+                    <div class="tier-score">0</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q3" style="opacity:0.15;width:2%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q3">"Grabe ba."</p>
+                        <p class="tier-label">No score recorded</p>
+                        <p class="tier-desc">No correct answers. Begin with the standard form of a circle (x−h)²+(y−k)²=r² and the vertex form of a parabola before attempting this quiz again.</p>
+                    </div>
+                </div>
+                <div class="tier-row">
+                    <div class="tier-score">1 – 5</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q3" style="opacity:0.30;width:25%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q3">"Needs Improvement."</p>
+                        <p class="tier-label">Beginning</p>
+                        <p class="tier-desc">Difficulty reading standard form equations. Focus on recognizing the sign pattern in (x−h)² and (y−k)² to correctly extract center coordinates.</p>
+                    </div>
+                </div>
+                <div class="tier-row">
+                    <div class="tier-score">6 – 10</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q3" style="opacity:0.50;width:50%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q3">"There is still room for improvement."</p>
+                        <p class="tier-label">Developing</p>
+                        <p class="tier-desc">Can handle circle equations but parabola orientation and vertex identification are causing issues. Practice distinguishing (x−h)²=4p(y−k) from (y−k)²=4p(x−h).</p>
+                    </div>
+                </div>
+                <div class="tier-row">
+                    <div class="tier-score">11 – 15</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q3" style="opacity:0.75;width:75%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q3">"You're almost there. Keep it up!"</p>
+                        <p class="tier-label">Proficient</p>
+                        <p class="tier-desc">Solid on both conic sections. Small errors likely in sign extraction (the minus in (x−h) means h is positive). Review one more time.</p>
+                    </div>
+                </div>
+                <div class="tier-row">
+                    <div class="tier-score">16 – 19</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q3" style="opacity:0.90;width:90%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q3">"You made it! You're a GENIUS!"</p>
+                        <p class="tier-label">Advanced</p>
+                        <p class="tier-desc">Excellent understanding of both circles and parabolas in standard form. Near-perfect — likely a single edge case in horizontal parabola orientation.</p>
+                    </div>
+                </div>
+                <div class="tier-row border-q3">
+                    <div class="tier-score q3">20</div>
+                    <div class="tier-bar-wrap"><div class="tier-bar bg-q3" style="width:100%"></div></div>
+                    <div class="tier-info">
+                        <p class="tier-quote q3">"You are a master of Analytic Geometry! In this quiz I guess. ;)"</p>
+                        <p class="tier-label">Perfect</p>
+                        <p class="tier-desc">Complete mastery of conic section equations. Every circle, every parabola, every vertex — all correct.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- ══ OVERALL GRADE SCALE ══ -->
+        <div class="section">
+            <div class="section-head">
+                <span class="section-pip" style="background:#fff4;"></span>
+                <h2 class="section-title">Overall Grade Interpretation</h2>
+                <span class="section-sub">Applies to all quizzes</span>
+            </div>
+            <p style="font-family:demiBold;font-size:13px;color:var(--text-muted);margin:0 0 20px 0;line-height:1.7;">
+                Each quiz is scored out of 20. The five tiers below reflect the same interpretation scale used across Q1, Q2, and Q3.
+            </p>
+            <div class="grade-grid">
+                <div class="grade-card" style="border-color:rgba(255,80,80,0.25);">
+                    <p class="grade-range" style="color:#ff6060;">0</p>
+                    <p class="grade-title">No Score</p>
+                    <p class="grade-body">Nothing answered correctly, or the quiz was not submitted. Return to the material and try again.</p>
+                </div>
+                <div class="grade-card" style="border-color:rgba(255,140,60,0.25);">
+                    <p class="grade-range" style="color:#ff9040;">1–5</p>
+                    <p class="grade-title">Needs Improvement</p>
+                    <p class="grade-body">Below 25%. Foundational concepts need attention before moving on.</p>
+                </div>
+                <div class="grade-card" style="border-color:rgba(255,210,60,0.25);">
+                    <p class="grade-range" style="color:#ffd040;">6–10</p>
+                    <p class="grade-title">Developing</p>
+                    <p class="grade-body">25–50%. Some understanding present but consistent accuracy not yet achieved.</p>
+                </div>
+                <div class="grade-card" style="border-color:rgba(100,200,120,0.25);">
+                    <p class="grade-range" style="color:#64c878;">11–15</p>
+                    <p class="grade-title">Proficient</p>
+                    <p class="grade-body">55–75%. Solid understanding with room to tighten accuracy on harder items.</p>
+                </div>
+                <div class="grade-card" style="border-color:rgba(26,170,136,0.30);">
+                    <p class="grade-range" style="color:var(--q1);">16–19</p>
+                    <p class="grade-title">Advanced</p>
+                    <p class="grade-body">80–95%. Strong command. Review the handful of items missed and you may reach perfect.</p>
+                </div>
+                <div class="grade-card border-q1">
+                    <p class="grade-range" style="color:var(--q1);">20</p>
+                    <p class="grade-title">Perfect</p>
+                    <p class="grade-body">100%. Full mastery demonstrated for that quiz's topic. Outstanding.</p>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /page -->
+
+    <script>
+    // ── Read most recent score from localStorage and show live banner ──
+    (function () {
+        const raw = localStorage.getItem("quizScore");
+        if (raw === null) return;
+
+        const score = parseInt(raw, 10);
+        if (isNaN(score)) return;
+
+        // Determine which quiz the score likely came from by checking
+        // a secondary key written by each quiz JS, fallback to generic label.
+        const quizKey = localStorage.getItem("quizName") || "Recent Quiz";
+
+        function getTier(s) {
+            if (s === 0)   return { label: "No Score",         color: "#ff6060",  pct: 2 };
+            if (s <= 5)    return { label: "Needs Improvement",color: "#ff9040",  pct: 25 };
+            if (s <= 10)   return { label: "Developing",       color: "#ffd040",  pct: 50 };
+            if (s <= 15)   return { label: "Proficient",       color: "#64c878",  pct: 75 };
+            if (s <= 19)   return { label: "Advanced",         color: "#1aaa88",  pct: 90 };
+            return               { label: "Perfect",           color: "#1aaa88",  pct: 100 };
+        }
+
+        function getInterp(s) {
+            if (s === 0)  return "Grabe ba.";
+            if (s <= 5)   return "Needs Improvement.";
+            if (s <= 10)  return "There is still room for improvement.";
+            if (s <= 15)  return "You're almost there. Keep it up!";
+            if (s <= 19)  return "You made it! You're a GENIUS!";
+            return "You are a master of Analytic Geometry! In this quiz I guess. ;)";
+        }
+
+        const tier = getTier(score);
+
+        const banner = document.getElementById("liveBanner");
+        const valEl  = document.getElementById("liveScoreVal");
+        const interpEl = document.getElementById("liveInterp");
+        const badgeEl  = document.getElementById("liveBadge");
+        const labelEl  = document.getElementById("liveQuizLabel");
+        const fillEl   = document.getElementById("liveProgressFill");
+
+        valEl.textContent    = score + " / 20";
+        valEl.style.color    = tier.color;
+        interpEl.textContent = getInterp(score);
+        badgeEl.textContent  = tier.label;
+        badgeEl.style.color  = tier.color;
+        badgeEl.style.borderColor = tier.color;
+        labelEl.textContent  = quizKey;
+        banner.style.borderColor = tier.color + "44";
+        banner.style.boxShadow   = "0 0 20px " + tier.color + "22";
+        banner.classList.add("visible");
+
+        // Animate fill after paint
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                fillEl.style.background = tier.color;
+                fillEl.style.width = tier.pct + "%";
+            }, 80);
+        });
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+/* ══════════════════════════════════════════
+   QUIZINIX — DESIGN SYSTEM  (index)
+   ══════════════════════════════════════════ */
+:root {
+    --accent:         #1aaa88;
+    --accent-dim:     rgba(26,170,136,0.18);
+    --accent-hover:   #20ccaa;
+    --glass-bg:       rgba(255,255,255,0.055);
+    --glass-border:   rgba(255,255,255,0.11);
+    --glass-blur:     blur(18px) saturate(1.4);
+    --nav-bg:         rgba(255,255,255,0.055);
+    --nav-blur:       blur(32px) saturate(1.6);
+    --nav-border:     rgba(255,255,255,0.10);
+    --text:           #eeeeee;
+    --text-muted:     rgba(238,238,238,0.60);
+    --radius-card:    16px;
+    --radius-btn:     9px;
+    --shadow-glow:    0 0 22px rgba(26,170,136,0.45);
+    --shadow-soft:    0 4px 24px rgba(0,0,0,0.30);
+    --transition:     0.18s ease;
+}
+
+/* ── CUSTOM SCROLLBAR ── */
+::-webkit-scrollbar              { width: 5px; }
+::-webkit-scrollbar-track        { background: #0b0e13; }
+::-webkit-scrollbar-thumb        { background: var(--accent); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover  { background: var(--accent-hover); }
+* { scrollbar-width: thin; scrollbar-color: var(--accent) #0b0e13; }
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+    margin: 0; padding: 0;
+    background-image: url(quizinix_bg.png);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--text);
+}
+
+@font-face { font-family: demiBold; src: url(VisbyRoundCF-DemiBold.otf); }
+@font-face { font-family: Bold;     src: url(VisbyRoundCF-Bold.otf); }
+
+#body { transition: background var(--transition); }
+
+.all {
+    min-height: 100vh;
+    width: 100%;
+    background-color: rgba(14,16,22,0.70);
+    backdrop-filter: blur(1px);
+}
+
+/* ── NAV ── */
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    height: 62px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--nav-bg);
+    backdrop-filter: var(--nav-blur);
+    border-bottom: 1px solid var(--nav-border);
+}
+
+li, a { text-decoration: none; color: var(--text); }
+
+#navTitle {
+    font-family: Bold;
+    font-size: 20px;
+    margin: 0;
+    letter-spacing: 0.02em;
+    color: var(--text);
+}
+
+.linkList {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin: 0; padding: 0;
+    list-style: none;
+}
+
+.link {
+    font-family: demiBold;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color var(--transition);
+}
+.link:hover { color: var(--text); }
+
+/* ── PAGE CONTENT ── */
+.content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10vw;
+    min-height: calc(100vh - 62px);
+    gap: 40px;
+}
+
+.intro { flex: 1; max-width: 560px; }
+
+.header {
+    font-family: Bold;
+    font-size: clamp(28px, 3.4vw, 52px);
+    line-height: 1.15;
+    margin: 0 0 20px 0;
+}
+
+.info {
+    font-family: demiBold;
+    font-size: clamp(13px, 1.1vw, 16px);
+    line-height: 1.75;
+    max-width: 440px;
+    margin-bottom: 26px;
+    color: var(--text-muted);
+}
+
+/* ── BUTTONS (shared) ── */
+button {
+    font-family: demiBold;
+    cursor: pointer;
+    border: none;
+    transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+button:hover {
+    box-shadow: var(--shadow-glow);
+    transform: scale(1.05);
+}
+
+.gS {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background-color: var(--accent);
+    color: var(--text);
+    padding: 12px 26px;
+    border-radius: var(--radius-btn);
+    box-shadow: var(--shadow-soft);
+}
+.gS a { color: var(--text); text-decoration: none; }
+
+/* ── SUBJECT GRID ── */
+.subJ {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.subJB {
+    width:  clamp(86px, 11.5vw, 150px);
+    height: clamp(86px, 11.5vw, 150px);
+    border-radius: var(--radius-card);
+    font-size: clamp(15px, 1.9vw, 24px);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text);
+    backdrop-filter: var(--glass-blur);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+#subJB1:hover {
+    border-color: rgba(26,170,136,0.50);
+    box-shadow: var(--shadow-glow);
+    transform: scale(1.05);
+}
+#subJB2:hover {
+    border-color: #8844bb;
+    box-shadow: 0 0 22px #8844bb;
+    transform: scale(1.05);
+}
+#subJB3:hover {
+    border-color: rgba(235,235,235,0.90)S;
+    box-shadow: 0 0 22px rgba(235,235,235,0.90);
+    transform: scale(1.05);
+}
+#subJB4:hover {
+    border-color: #aa9900;
+    box-shadow: 0 0 22px #aa9900;
+    transform: scale(1.05);
+}
+
+/* ── TOPIC PANELS ── */
+#Q0t              { display: block; }
+#Q1t,#Q2t,#Q3t,#Q4t { display: none; }
+
+/* ── QUIZ BUTTON ACCENTS ── */
+#gq1 { background-color: #1aaa88; color: var(--text); }
+#gq2 { background-color: #8844bb; color: var(--text); }
+#gq3 { background-color: rgba(235,235,235,0.90); color: #1a1a1a; }
+#gq4 { background-color: #aa9900; color: var(--text); }
+
+/* ═══════════════════════
+   RESPONSIVE
+   ═══════════════════════ */
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 44px 6vw;
+        gap: 32px;
+        min-height: calc(100vh - 62px);
+        text-align: center;
+    }
+    .intro {
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .header { font-size: clamp(24px, 6vw, 38px); margin-bottom: 14px; }
+    .header br { display: none; }
+    .info { font-size: clamp(13px, 3.2vw, 15px); max-width: 100%; text-align: center; }
+    .subJB {
+        width: clamp(96px, 32vw, 145px);
+        height: clamp(56px, 17vw, 96px);
+        font-size: clamp(14px, 4vw, 20px);
+        border-radius: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav { padding: 0 16px; height: 54px; }
+    #navTitle { font-size: 17px; }
+    .linkList { gap: 14px; }
+    .link { font-size: 11px; }
+    .content { padding: 30px 5vw; gap: 22px; }
+    .header { font-size: clamp(21px, 8vw, 30px); }
+    .info { font-size: 13px; }
+    .subJB {
+        width: clamp(86px, 37vw, 132px);
+        height: clamp(52px, 19vw, 84px);
+        font-size: clamp(13px, 5vw, 18px);
+        border-radius: 11px;
+    }
+}
