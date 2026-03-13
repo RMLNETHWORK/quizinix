@@ -225,6 +225,9 @@ button:hover {
         font-size: clamp(14px, 4vw, 20px);
         border-radius: 13px;
     }
+    .subJ{
+        margin-bottom: 200px;
+    }
 }
 
 @media (max-width: 480px) {
